@@ -69,6 +69,7 @@ download_source <- function (source, name) {
   }
 }
 
+
 # load a cached file as a raster
 load_source <- function (name) {
   file_name <- source_file(name)
