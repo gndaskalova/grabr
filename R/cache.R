@@ -41,8 +41,41 @@ data_store <- function (path = NULL) {
   }
 }
 
+# what is the file with this name
+source_file <- function (name) {
+  file.path(data_store(), name)
+}
+
 # has this source been cached already
 source_cached <- function (name) {
-  file_name <- file.path(data_store(), name)
+  file_name <- source_file(name)
   file.exists(file_name)
 }
+
+# delete a downloaded source, if it exists
+delete_source <- function (name) {
+  if (source_cached(name)) {
+    file_name <- source_file(name)
+    file.remove(file_name)
+  }
+}
+
+# download a source and store it with a name (unless it has already been
+# downloaded)
+download_source <- function (source, name) {
+  if (!source_cached(name)) {
+    file_name <- source_file(name)
+    download.file(source, file_name)
+  }
+}
+
+# load a cached file as a raster
+load_source <- function (name) {
+  file_name <- source_file(name)
+  raster(file_name)
+}
+
+# usage:
+
+# download_source("some_url", "name")
+# load_source("name")
